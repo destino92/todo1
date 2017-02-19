@@ -9,20 +9,23 @@ class App extends Component {
       todoList: [
         {
           'id': 1,
-          'content': 'do something really urgent'
+          'content': 'do something really urgent',
+          'completed': false
         },
         {
           'id': 2,
-          'content': 'do something else'
+          'content': 'do something else',
+          'completed': false
         }
       ],
-      listContent: 'input something'
+      listContent: ''
     }
 
     this.removeItem = this.removeItem.bind(this);
     this.addItem = this.addItem.bind(this);
     this.onSearchChange = this.onSearchChange.bind(this);
     this.setPreviousId = this.setPreviousId.bind(this);
+    this.toggleCompletion = this.toggleCompletion.bind(this);
   }
 
   removeItem(id){
@@ -46,7 +49,8 @@ class App extends Component {
 
     let item = {
       'id': this.setPreviousId(),
-      'content': listContent
+      'content': listContent,
+      completed: false
     }
 
     this.setState(previousState => ({
@@ -57,6 +61,15 @@ class App extends Component {
 
   onSearchChange(event) {
     this.setState({ listContent: event.target.value });
+  }
+
+  toggleCompletion(i) {
+    let todoList = this.state.todoList;
+    todoList[i].completed = !todoList[i].completed;
+
+    this.setState({
+      todoList: todoList
+    });
   }
 
   render() {
@@ -78,9 +91,15 @@ class App extends Component {
           </button>
         </form>
         <ul>
-          {todoList.map(item =>
+          {todoList.map((item,i) =>
             <li key={item.id}>
-              {item.content} | <button onClick={ () => this.removeItem(item.id)}>x</button>
+              {item.content} |
+               <button onClick={() => this.toggleCompletion(i)}>
+                 {item.completed ? 'completed' : 'incomplete' }
+               </button> |
+               <button onClick={ () => this.removeItem(item.id)}>
+                 x
+               </button>
             </li>
           )}
         </ul>

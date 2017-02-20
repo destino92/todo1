@@ -4,6 +4,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
 import {ListItem} from 'material-ui/List';
+import Divider from 'material-ui/Divider';
 
 class App extends Component {
   constructor(props) {
@@ -158,12 +159,15 @@ const TodoItem = ({ item,
     );
   } else {
     return (
+      <div>
       <ListItem>
         {item.content}
         <FlatButton onClick={() => toggleEditView(index)} label="EDIT" primary={true}/>
         <FlatButton onClick={() => toggleCompletion(index)} primary={true} label={item.completed ? 'COMPLETED' : 'INCOMPLETE' }/>
         <FlatButton onClick={ () => removeItem(item.id)} label="DELETE" primary={true}/>
-     </ListItem>
+      </ListItem>
+      <Divider />
+      </div>
     );
   }
 }

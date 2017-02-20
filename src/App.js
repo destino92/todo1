@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-
+import TextField from 'material-ui/TextField';
 
 class App extends Component {
   constructor(props) {
@@ -149,7 +149,7 @@ const TodoItem = ({ item,
     return(
       <li>
         <form onSubmit={(event) => updateItem(event,item,index)}>
-          <input type="text" value={editedContent} onChange={onEditChange}/>
+          <TextField id="text-field-controlled" type="text" value={editedContent} onChange={onEditChange}/>
           <button type="submit">Update</button>
         </form>
       </li>
@@ -174,7 +174,8 @@ const TodoInput = ({addItem,
                     listContent,
                     onSearchChange}) =>
   <form onSubmit={addItem}>
-    <input
+    <TextField
+      id="text-field-controlled"
       type="text"
       value={listContent}
       onChange={onSearchChange}

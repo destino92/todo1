@@ -10,22 +10,29 @@ class App extends Component {
         {
           'id': 1,
           'content': 'do something really urgent',
-          'completed': false
+          'completed': false,
+          'beingEdited': false
         },
         {
           'id': 2,
           'content': 'do something else',
-          'completed': false
+          'completed': false,
+          'beingEdited': false
         }
       ],
-      listContent: ''
+      listContent: '',
+      editedContent: ''
     }
 
     this.removeItem = this.removeItem.bind(this);
     this.addItem = this.addItem.bind(this);
     this.onSearchChange = this.onSearchChange.bind(this);
+    this.onEditChange = this.onEditChange.bind(this);
     this.setPreviousId = this.setPreviousId.bind(this);
     this.toggleCompletion = this.toggleCompletion.bind(this);
+    this.toggleEditView = this.toggleEditView.bind(this);
+    this.renderItemOrEditField = this.renderItemOrEditField.bind(this);
+    this.updateItem = this.updateItem.bind(this);
   }
 
   removeItem(id){
@@ -50,17 +57,23 @@ class App extends Component {
     let item = {
       'id': this.setPreviousId(),
       'content': listContent,
-      completed: false
+      completed: false,
+      beingEdited: false
     }
 
     this.setState(previousState => ({
-        todoList: [...previousState.todoList, item]
+        todoList: [...previousState.todoList, item],
+        listContent: ''
       })
     );
   }
 
   onSearchChange(event) {
     this.setState({ listContent: event.target.value });
+  }
+
+  onEditChange(event) {
+    this.setState({ editedContent: event.target.value });
   }
 
   toggleCompletion(i) {
@@ -72,10 +85,57 @@ class App extends Component {
     });
   }
 
+  toggleEditView(i) {
+    let todoList = this.state.todoList;
+    todoList[i].beingEdited = !todoList[i].beingEdited;
+
+    this.setState({
+      todoList: todoList
+    });
+  }
+
+  updateItem(event, item, i) {
+    event.preventDefault();
+    let todoList = this.state.todoList;
+    todoList[i].content = this.state.editedContent;
+    todoList[i].beingEdited = false;
+
+    this.setState({
+      todoList: todoList,
+      editedContent: ''
+    });
+  }
+
+  renderItemOrEditField(item, i){
+    if ( item.beingEdited ) {
+      return(
+        <li key={item.id}>
+          <form onSubmit={(event) => this.updateItem(event,item,i)}>
+            <input type="text" value={this.state.editedContent} onChange={this.onEditChange}/>
+            <button type="submit">Update</button>
+          </form>
+        </li>
+      );
+    } else {
+      return (
+        <li key={item.id}>
+          {item.content}
+          <button onClick={() => this.toggleEditView(i)}>Edit</button>|
+          <button onClick={() => this.toggleCompletion(i)}>
+            {item.completed ? 'completed' : 'incomplete' }
+          </button> |
+          <button onClick={ () => this.removeItem(item.id)}>
+            x
+          </button>
+       </li>
+      );
+    }
+  }
+
   render() {
     const {
       todoList,
-      listContent
+      listContent,
     } = this.state;
 
     return (
@@ -92,15 +152,7 @@ class App extends Component {
         </form>
         <ul>
           {todoList.map((item,i) =>
-            <li key={item.id}>
-              {item.content} |
-               <button onClick={() => this.toggleCompletion(i)}>
-                 {item.completed ? 'completed' : 'incomplete' }
-               </button> |
-               <button onClick={ () => this.removeItem(item.id)}>
-                 x
-               </button>
-            </li>
+            this.renderItemOrEditField( item, i )
           )}
         </ul>
       </div>

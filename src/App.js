@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import TextField from 'material-ui/TextField';
+import FlatButton from 'material-ui/FlatButton';
 
 class App extends Component {
   constructor(props) {
@@ -150,7 +151,7 @@ const TodoItem = ({ item,
       <li>
         <form onSubmit={(event) => updateItem(event,item,index)}>
           <TextField id="text-field-controlled" type="text" value={editedContent} onChange={onEditChange}/>
-          <button type="submit">Update</button>
+          <FlatButton label="Update" primary={true} type="submit"/>
         </form>
       </li>
     );

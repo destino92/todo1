@@ -3,7 +3,7 @@ import './App.css';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
-import RadioButton from 'material-ui/RadioButton';
+import {ListItem} from 'material-ui/List';
 
 class App extends Component {
   constructor(props) {
@@ -158,14 +158,12 @@ const TodoItem = ({ item,
     );
   } else {
     return (
-      <li>
+      <ListItem>
         {item.content}
-        <FlatButton onClick={() => toggleEditView(index)} label="Edit"/> |
-        <FlatButton onClick={() => toggleCompletion(index)}>
-          {item.completed ? 'completed' : 'incomplete' }
-        </FlatButton>|
-        <FlatButton onClick={ () => removeItem(item.id)} label="Delete"/>
-     </li>
+        <FlatButton onClick={() => toggleEditView(index)} label="EDIT" primary={true}/>
+        <FlatButton onClick={() => toggleCompletion(index)} primary={true} label={item.completed ? 'COMPLETED' : 'INCOMPLETE' }/>
+        <FlatButton onClick={ () => removeItem(item.id)} label="DELETE" primary={true}/>
+     </ListItem>
     );
   }
 }

@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+
 
 class App extends Component {
   constructor(props) {
@@ -113,21 +115,23 @@ class App extends Component {
     } = this.state;
 
     return (
-      <div className="App">
-        <TodoInput addItem={this.addItem} listContent={listContent}   onSearchChange={this.onSearchChange} />
-        <ul>
-          {todoList.map((item,i) =>
-            <TodoItem
-              item={item}
-              index={i}
-              key={item.id}
-              updateItem={this.updateItem} editedContent={editedContent} onEditChange={this.onEditChange}
-              toggleEditView={this.toggleEditView}
-              toggleCompletion={this.toggleCompletion}
-              removeItem={this.removeItem}/>
-          )}
-        </ul>
-      </div>
+      <MuiThemeProvider>
+        <div className="App">
+            <TodoInput addItem={this.addItem} listContent={listContent}   onSearchChange={this.onSearchChange} />
+            <ul>
+              {todoList.map((item,i) =>
+                <TodoItem
+                  item={item}
+                  index={i}
+                  key={item.id}
+                  updateItem={this.updateItem} editedContent={editedContent} onEditChange={this.onEditChange}
+                  toggleEditView={this.toggleEditView}
+                  toggleCompletion={this.toggleCompletion}
+                  removeItem={this.removeItem}/>
+              )}
+          </ul>
+        </div>
+      </MuiThemeProvider>
     );
   }
 }

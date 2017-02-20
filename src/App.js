@@ -31,7 +31,6 @@ class App extends Component {
     this.setPreviousId = this.setPreviousId.bind(this);
     this.toggleCompletion = this.toggleCompletion.bind(this);
     this.toggleEditView = this.toggleEditView.bind(this);
-    this.renderItemOrEditField = this.renderItemOrEditField.bind(this);
     this.updateItem = this.updateItem.bind(this);
   }
 
@@ -106,36 +105,11 @@ class App extends Component {
     });
   }
 
-  renderItemOrEditField(item, i){
-    if ( item.beingEdited ) {
-      return(
-        <li key={item.id}>
-          <form onSubmit={(event) => this.updateItem(event,item,i)}>
-            <input type="text" value={this.state.editedContent} onChange={this.onEditChange}/>
-            <button type="submit">Update</button>
-          </form>
-        </li>
-      );
-    } else {
-      return (
-        <li key={item.id}>
-          {item.content}
-          <button onClick={() => this.toggleEditView(i)}>Edit</button>|
-          <button onClick={() => this.toggleCompletion(i)}>
-            {item.completed ? 'completed' : 'incomplete' }
-          </button> |
-          <button onClick={ () => this.removeItem(item.id)}>
-            x
-          </button>
-       </li>
-      );
-    }
-  }
-
   render() {
     const {
       todoList,
       listContent,
+      editedContent
     } = this.state;
 
     return (
@@ -152,10 +126,51 @@ class App extends Component {
         </form>
         <ul>
           {todoList.map((item,i) =>
-            this.renderItemOrEditField( item, i )
+            <TodoItem
+              item={item}
+              index={i}
+              key={item.id}
+              updateItem={this.updateItem} editedContent={editedContent} onEditChange={this.onEditChange}
+              toggleEditView={this.toggleEditView}
+              toggleCompletion={this.toggleCompletion}
+              removeItem={this.removeItem}/>
           )}
         </ul>
       </div>
+    );
+  }
+}
+
+const TodoItem = ({ item,
+                    index,
+                    updateItem,
+                    editedContent,
+                    onEditChange,
+                    toggleEditView,
+                    toggleCompletion,
+                    removeItem
+                  }) => {
+  if ( item.beingEdited ) {
+    return(
+      <li>
+        <form onSubmit={(event) => updateItem(event,item,index)}>
+          <input type="text" value={editedContent} onChange={onEditChange}/>
+          <button type="submit">Update</button>
+        </form>
+      </li>
+    );
+  } else {
+    return (
+      <li>
+        {item.content}
+        <button onClick={() => toggleEditView(index)}>Edit</button>|
+        <button onClick={() => toggleCompletion(index)}>
+          {item.completed ? 'completed' : 'incomplete' }
+        </button> |
+        <button onClick={ () => removeItem(item.id)}>
+          x
+        </button>
+     </li>
     );
   }
 }

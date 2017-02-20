@@ -114,16 +114,7 @@ class App extends Component {
 
     return (
       <div className="App">
-        <form onSubmit={this.addItem}>
-          <input
-            type="text"
-            value={listContent}
-            onChange={this.onSearchChange}
-          />
-          <button type="submit">
-            SAVE
-          </button>
-        </form>
+        <TodoInput addItem={this.addItem} listContent={listContent}   onSearchChange={this.onSearchChange} />
         <ul>
           {todoList.map((item,i) =>
             <TodoItem
@@ -174,5 +165,19 @@ const TodoItem = ({ item,
     );
   }
 }
+
+const TodoInput = ({addItem,
+                    listContent,
+                    onSearchChange}) =>
+  <form onSubmit={addItem}>
+    <input
+      type="text"
+      value={listContent}
+      onChange={onSearchChange}
+    />
+    <button type="submit">
+      SAVE
+    </button>
+  </form>
 
 export default App;

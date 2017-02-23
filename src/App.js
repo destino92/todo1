@@ -171,13 +171,13 @@ const TodoItem = ({ item,
     return(
       <div>
         <ListItem>
-          <form onSubmit={(event) => updateItem(event,item,index)}>
-            <TextField id="text-field-controlled" type="text" value={editedContent} onChange={onEditChange}
-            multiLine={true}
-            rows={1}
-            rowsMax={4}/>
-            <FlatButton label="Update" primary={true} type="submit"/>
-          </form>
+            <form onSubmit={(event) => updateItem(event,item,index)}>
+              <TextField id="text-field-controlled" type="text" value={editedContent} onChange={onEditChange}
+              multiLine={true}
+              rows={1}
+              rowsMax={4} onBlur={(event) => updateItem(event,item,index)}/>
+              <FlatButton label="Update" primary={true} type="submit"/>
+            </form>
         </ListItem>
         <Divider />
       </div>
@@ -185,12 +185,18 @@ const TodoItem = ({ item,
   } else {
     return (
       <div>
-        <ListItem rightIcon={<IconButton children={<IconDelete color={red500} hoverColor={red800} />} onClick={ () => removeItem(item.id)} />} >
-          <div style={styles.block}>
-            <Checkbox style={styles.checkbox} onClick={() => toggleCompletion(index)}/>
+        <ListItem
+          rightIcon={<IconButton
+                    children={<IconDelete color={red500} hoverColor={red800} />}
+                    onClick={ () => removeItem(item.id)} />}
+        >
+          {<div style={styles.block}>
+            <Checkbox style={styles.checkbox}
+                          onClick={() => toggleCompletion(index)}/>
+           </div>}
+          <div onDoubleClick={() =>toggleEditView(index)}>
+            {item.content}
           </div>
-          <div onDoubleClick={() => toggleEditView(index)}>{item.content}</div>
-
         </ListItem>
         <Divider />
       </div>

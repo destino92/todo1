@@ -8,8 +8,8 @@ import Divider from 'material-ui/Divider';
 import Checkbox from 'material-ui/Checkbox';
 import IconButton from 'material-ui/IconButton';
 import IconDelete from 'material-ui/svg-icons/action/delete';
-import { Grid, Col, Row } from 'react-bootstrap';
 import {red800, red500} from 'material-ui/styles/colors';
+import { Grid, Col, Row } from 'react-bootstrap';
 
 class App extends Component {
   constructor(props) {
@@ -127,24 +127,25 @@ class App extends Component {
     return (
       <MuiThemeProvider>
         <Grid className="App">
+
           <Row className="show-grid">
-            <Col xs={6} md={6}>
+            <Col xs={12} md={6} mdOffset={3}>
               <TodoInput addItem={this.addItem} listContent={listContent}   onSearchChange={this.onSearchChange} />
+
+              <List>
+                {todoList.map((item,i) =>
+                  <TodoItem
+                    item={item}
+                    index={i}
+                    key={item.id}
+                    updateItem={this.updateItem} editedContent={editedContent} onEditChange={this.onEditChange}
+                    toggleEditView={this.toggleEditView}
+                    toggleCompletion={this.toggleCompletion}
+                    removeItem={this.removeItem}/>
+                )}
+              </List>
             </Col>
           </Row>
-
-            <List>
-              {todoList.map((item,i) =>
-                <TodoItem
-                  item={item}
-                  index={i}
-                  key={item.id}
-                  updateItem={this.updateItem} editedContent={editedContent} onEditChange={this.onEditChange}
-                  toggleEditView={this.toggleEditView}
-                  toggleCompletion={this.toggleCompletion}
-                  removeItem={this.removeItem}/>
-              )}
-            </List>
         </Grid>
       </MuiThemeProvider>
     );

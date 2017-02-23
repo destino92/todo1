@@ -6,7 +6,9 @@ import FlatButton from 'material-ui/FlatButton';
 import {List, ListItem} from 'material-ui/List';
 import Divider from 'material-ui/Divider';
 import Checkbox from 'material-ui/Checkbox';
-import { Grid, Col, Glyphicon } from 'react-bootstrap';
+import IconButton from 'material-ui/IconButton';
+import IconDelete from 'material-ui/svg-icons/action/delete';
+import { Grid, Col } from 'react-bootstrap';
 
 const styles = {
   block: {
@@ -61,7 +63,12 @@ class App extends Component {
   setPreviousId(){
     const { todoList } = this.state;
 
-    return todoList[todoList.length - 1].id + 1;
+    if(todoList === []){
+      return todoList[todoList.length - 1].id + 1;
+    }else{
+      return 1;
+    }
+
   }
 
   addItem(event){
@@ -177,11 +184,10 @@ const TodoItem = ({ item,
   } else {
     return (
       <div>
-        <ListItem rightIcon={<FlatButton onClick={ () => removeItem(item.id)} label="DELETE" secondary={true}/>}>
+        <ListItem rightIcon={<IconButton children={<IconDelete/>} onClick={ () => removeItem(item.id)} />}>
           <div style={styles.block}>
             <Checkbox style={styles.checkbox} onClick={() => toggleCompletion(index)}/>
           </div>
-
           <div onDoubleClick={() => toggleEditView(index)}>{item.content}</div>
 
 

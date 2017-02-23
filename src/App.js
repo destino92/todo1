@@ -184,7 +184,7 @@ const TodoItem = ({ item,
                     onClick={ () => removeItem(item.id)} />}
         >
           <Checkbox style={{width:"10%"}} onClick={() => toggleCompletion(item, index)} />
-          <div onDoubleClick={() =>toggleEditView(item, index)}>
+          <div onDoubleClick={() =>toggleEditView(item, index)} className={item.completed ? 'completedTodo' : ''}>
             {item.content}
           </div>
         </ListItem>

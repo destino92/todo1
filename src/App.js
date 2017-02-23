@@ -3,8 +3,19 @@ import './App.css';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
-import {ListItem} from 'material-ui/List';
+import {List, ListItem} from 'material-ui/List';
 import Divider from 'material-ui/Divider';
+import Checkbox from 'material-ui/Checkbox';
+import { Grid, Col, Glyphicon } from 'react-bootstrap';
+
+const styles = {
+  block: {
+    maxWidth: 250,
+  },
+  checkbox: {
+    marginBottom: 16,
+  },
+};
 
 class App extends Component {
   constructor(props) {
@@ -14,7 +25,7 @@ class App extends Component {
       todoList: [
         {
           'id': 1,
-          'content': 'do something really urgent',
+          'content': 'do something really urgent ishosics sisisucsi iscus isos ic sioc sicis csiocsiocsc pscpsco osciscoisp csposciscos pcsp csocispoc scos csocps cicop scios cso soc scosp csocs cosp cos cosc opsipos cospocs csios cscipsoc socsocs csp cspocsociscpsc oospc scos pcos cps spoc sicspo',
           'completed': false,
           'beingEdited': false
         },
@@ -121,7 +132,7 @@ class App extends Component {
       <MuiThemeProvider>
         <div className="App">
             <TodoInput addItem={this.addItem} listContent={listContent}   onSearchChange={this.onSearchChange} />
-            <ul>
+            <List>
               {todoList.map((item,i) =>
                 <TodoItem
                   item={item}
@@ -132,7 +143,7 @@ class App extends Component {
                   toggleCompletion={this.toggleCompletion}
                   removeItem={this.removeItem}/>
               )}
-          </ul>
+            </List>
         </div>
       </MuiThemeProvider>
     );
@@ -150,23 +161,32 @@ const TodoItem = ({ item,
                   }) => {
   if ( item.beingEdited ) {
     return(
-      <li>
-        <form onSubmit={(event) => updateItem(event,item,index)}>
-          <TextField id="text-field-controlled" type="text" value={editedContent} onChange={onEditChange}/>
-          <FlatButton label="Update" primary={true} type="submit"/>
-        </form>
-      </li>
+      <div>
+        <ListItem>
+          <form onSubmit={(event) => updateItem(event,item,index)}>
+            <TextField id="text-field-controlled" type="text" value={editedContent} onChange={onEditChange}
+            multiLine={true}
+            rows={1}
+            rowsMax={4}/>
+            <FlatButton label="Update" primary={true} type="submit"/>
+          </form>
+        </ListItem>
+        <Divider />
+      </div>
     );
   } else {
     return (
       <div>
-      <ListItem>
-        {item.content}
-        <FlatButton onClick={() => toggleEditView(index)} label="EDIT" primary={true}/>
-        <FlatButton onClick={() => toggleCompletion(index)} primary={true} label={item.completed ? 'COMPLETED' : 'INCOMPLETE' }/>
-        <FlatButton onClick={ () => removeItem(item.id)} label="DELETE" primary={true}/>
-      </ListItem>
-      <Divider />
+        <ListItem rightIcon={<FlatButton onClick={ () => removeItem(item.id)} label="DELETE" secondary={true}/>}>
+          <div style={styles.block}>
+            <Checkbox style={styles.checkbox} onClick={() => toggleCompletion(index)}/>
+          </div>
+
+          <div onDoubleClick={() => toggleEditView(index)}>{item.content}</div>
+
+
+        </ListItem>
+        <Divider />
       </div>
     );
   }
@@ -181,10 +201,11 @@ const TodoInput = ({addItem,
       type="text"
       value={listContent}
       onChange={onSearchChange}
+      multiLine={true}
+      rows={1}
+      rowsMax={4}
     />
-    <button type="submit">
-      SAVE
-    </button>
+    <FlatButton type="submit" label="SUBMIT" primary={true}/>
   </form>
 
 export default App;

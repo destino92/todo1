@@ -9,6 +9,7 @@ import Checkbox from 'material-ui/Checkbox';
 import IconButton from 'material-ui/IconButton';
 import IconDelete from 'material-ui/svg-icons/action/delete';
 import { Grid, Col, Row } from 'react-bootstrap';
+import {red800, red500} from 'material-ui/styles/colors';
 
 const styles = {
   block: {
@@ -62,9 +63,7 @@ class App extends Component {
 
   setPreviousId(){
     const { todoList } = this.state;
-    console.log(todoList);
-    console.log(todoList === []);
-    console.log(todoList.length);
+
     return todoList.length === 0 ? 1 : todoList[todoList.length - 1].id + 1;
   }
 
@@ -186,12 +185,11 @@ const TodoItem = ({ item,
   } else {
     return (
       <div>
-        <ListItem rightIcon={<IconButton children={<IconDelete/>} onClick={ () => removeItem(item.id)} />}>
+        <ListItem rightIcon={<IconButton children={<IconDelete color={red500} hoverColor={red800} />} onClick={ () => removeItem(item.id)} />} >
           <div style={styles.block}>
             <Checkbox style={styles.checkbox} onClick={() => toggleCompletion(index)}/>
           </div>
           <div onDoubleClick={() => toggleEditView(index)}>{item.content}</div>
-
 
         </ListItem>
         <Divider />

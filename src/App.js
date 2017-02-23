@@ -8,7 +8,7 @@ import Divider from 'material-ui/Divider';
 import Checkbox from 'material-ui/Checkbox';
 import IconButton from 'material-ui/IconButton';
 import IconDelete from 'material-ui/svg-icons/action/delete';
-import { Grid, Col } from 'react-bootstrap';
+import { Grid, Col, Row } from 'react-bootstrap';
 
 const styles = {
   block: {
@@ -62,13 +62,10 @@ class App extends Component {
 
   setPreviousId(){
     const { todoList } = this.state;
-
-    if(todoList === []){
-      return todoList[todoList.length - 1].id + 1;
-    }else{
-      return 1;
-    }
-
+    console.log(todoList);
+    console.log(todoList === []);
+    console.log(todoList.length);
+    return todoList.length === 0 ? 1 : todoList[todoList.length - 1].id + 1;
   }
 
   addItem(event){
@@ -77,7 +74,7 @@ class App extends Component {
 
 
     let item = {
-      'id': this.setPreviousId(),
+      'id': this.setPreviousId() || 1,
       'content': listContent,
       completed: false,
       beingEdited: false
@@ -137,8 +134,13 @@ class App extends Component {
 
     return (
       <MuiThemeProvider>
-        <div className="App">
-            <TodoInput addItem={this.addItem} listContent={listContent}   onSearchChange={this.onSearchChange} />
+        <Grid className="App">
+          <Row className="show-grid">
+            <Col xs={6} md={6}>
+              <TodoInput addItem={this.addItem} listContent={listContent}   onSearchChange={this.onSearchChange} />
+            </Col>
+          </Row>
+
             <List>
               {todoList.map((item,i) =>
                 <TodoItem
@@ -151,7 +153,7 @@ class App extends Component {
                   removeItem={this.removeItem}/>
               )}
             </List>
-        </div>
+        </Grid>
       </MuiThemeProvider>
     );
   }

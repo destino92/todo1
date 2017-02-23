@@ -11,15 +11,6 @@ import IconDelete from 'material-ui/svg-icons/action/delete';
 import { Grid, Col, Row } from 'react-bootstrap';
 import {red800, red500} from 'material-ui/styles/colors';
 
-const styles = {
-  block: {
-    maxWidth: 250,
-  },
-  checkbox: {
-    marginBottom: 16,
-  },
-};
-
 class App extends Component {
   constructor(props) {
     super(props);
@@ -94,33 +85,35 @@ class App extends Component {
     this.setState({ editedContent: event.target.value });
   }
 
-  toggleCompletion(i) {
+  toggleCompletion(item, i) {
     let todoList = this.state.todoList;
     todoList[i].completed = !todoList[i].completed;
 
     this.setState({
-      todoList: todoList
+      todoList: todoList,
+      editedContent: item.content
     });
   }
 
-  toggleEditView(i) {
+  toggleEditView(item,i) {
     let todoList = this.state.todoList;
     todoList[i].beingEdited = !todoList[i].beingEdited;
 
     this.setState({
-      todoList: todoList
+      todoList: todoList,
+      editedContent: item.content
     });
   }
 
   updateItem(event, item, i) {
     event.preventDefault();
+
     let todoList = this.state.todoList;
     todoList[i].content = this.state.editedContent;
     todoList[i].beingEdited = false;
 
     this.setState({
-      todoList: todoList,
-      editedContent: ''
+      todoList: todoList
     });
   }
 
@@ -190,11 +183,8 @@ const TodoItem = ({ item,
                     children={<IconDelete color={red500} hoverColor={red800} />}
                     onClick={ () => removeItem(item.id)} />}
         >
-          {<div style={styles.block}>
-            <Checkbox style={styles.checkbox}
-                          onClick={() => toggleCompletion(index)}/>
-           </div>}
-          <div onDoubleClick={() =>toggleEditView(index)}>
+          <Checkbox style={{width:"10%"}} onClick={() => toggleCompletion(item, index)} />
+          <div onDoubleClick={() =>toggleEditView(item, index)}>
             {item.content}
           </div>
         </ListItem>

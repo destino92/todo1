@@ -165,15 +165,22 @@ const TodoItem = ({ item,
                     toggleCompletion,
                     removeItem
                   }) => {
+
   if ( item.beingEdited ) {
     return(
       <div>
         <ListItem>
             <form onSubmit={(event) => updateItem(event,item,index)}>
-              <TextField id="text-field-controlled" type="text" value={editedContent} onChange={onEditChange}
+              <TextField id="text-field-controlled"
+              name="inlineInput"
+              type="text"
+              value={editedContent}  onChange={onEditChange}
               multiLine={true}
               rows={1}
-              rowsMax={4} onBlur={(event) => updateItem(event,item,index)}/>
+              rowsMax={4}
+              onBlur={(event) => updateItem(event,item,index)}
+              autoFocus
+            />
 
               <FlatButton label="Update" primary={true} type="submit"/>
             </form>

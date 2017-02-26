@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import Paper from 'material-ui/Paper';
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
 import {List, ListItem} from 'material-ui/List';
@@ -107,6 +108,7 @@ class App extends Component {
 
   updateItem(event, item, i) {
     event.preventDefault();
+    console.log("I have been called");
 
     let todoList = this.state.todoList;
     todoList[i].content = this.state.editedContent;
@@ -130,20 +132,22 @@ class App extends Component {
 
           <Row className="show-grid">
             <Col xs={12} md={6} mdOffset={3}>
-              <TodoInput addItem={this.addItem} listContent={listContent}   onSearchChange={this.onSearchChange} />
+              <Paper zDepth={1}>
+                <TodoInput addItem={this.addItem} listContent={listContent}   onSearchChange={this.onSearchChange} />
 
-              <List>
-                {todoList.map((item,i) =>
-                  <TodoItem
-                    item={item}
-                    index={i}
-                    key={item.id}
-                    updateItem={this.updateItem} editedContent={editedContent} onEditChange={this.onEditChange}
-                    toggleEditView={this.toggleEditView}
-                    toggleCompletion={this.toggleCompletion}
-                    removeItem={this.removeItem}/>
-                )}
-              </List>
+                <List>
+                  {todoList.map((item,i) =>
+                    <TodoItem
+                      item={item}
+                      index={i}
+                      key={item.id}
+                      updateItem={this.updateItem} editedContent={editedContent} onEditChange={this.onEditChange}
+                      toggleEditView={this.toggleEditView}
+                      toggleCompletion={this.toggleCompletion}
+                      removeItem={this.removeItem}/>
+                  )}
+                </List>
+              </Paper>
             </Col>
           </Row>
         </Grid>
@@ -170,6 +174,7 @@ const TodoItem = ({ item,
               multiLine={true}
               rows={1}
               rowsMax={4} onBlur={(event) => updateItem(event,item,index)}/>
+
               <FlatButton label="Update" primary={true} type="submit"/>
             </form>
         </ListItem>

@@ -17,22 +17,10 @@ class App extends Component {
     super(props);
 
     this.state = {
-      todoList: [
-        {
-          'id': 1,
-          'content': 'do something really urgent ishosics sisisucsi iscus isos ic sioc sicis csiocsiocsc pscpsco osciscoisp csposciscos pcsp csocispoc scos csocps cicop scios cso soc scosp csocs cosp cos cosc opsipos cospocs csios cscipsoc socsocs csp cspocsociscpsc oospc scos pcos cps spoc sicspo',
-          'completed': false,
-          'beingEdited': false
-        },
-        {
-          'id': 2,
-          'content': 'do something else',
-          'completed': false,
-          'beingEdited': false
-        }
-      ],
+      todoList: [],
       listContent: '',
-      editedContent: ''
+      editedContent: '',
+      leftItems: 0
     }
 
     this.removeItem = this.removeItem.bind(this);
@@ -61,7 +49,7 @@ class App extends Component {
 
   addItem(event){
     event.preventDefault();
-    const { listContent } = this.state;
+    const { listContent, leftItems } = this.state;
 
 
     let item = {
@@ -73,7 +61,8 @@ class App extends Component {
 
     this.setState(previousState => ({
         todoList: [...previousState.todoList, item],
-        listContent: ''
+        listContent: '',
+        leftItems: leftItems + 1
       })
     );
   }
@@ -87,12 +76,14 @@ class App extends Component {
   }
 
   toggleCompletion(item, i) {
-    let todoList = this.state.todoList;
+    const {todoList, leftItems} = this.state;
     todoList[i].completed = !todoList[i].completed;
+    let completed = todoList[i].completed ? leftItems - 1 : leftItems + 1;
 
     this.setState({
       todoList: todoList,
-      editedContent: item.content
+      editedContent: item.content,
+      leftItems: completed
     });
   }
 
@@ -108,7 +99,6 @@ class App extends Component {
 
   updateItem(event, item, i) {
     event.preventDefault();
-    console.log("I have been called");
 
     let todoList = this.state.todoList;
     todoList[i].content = this.state.editedContent;
@@ -123,7 +113,8 @@ class App extends Component {
     const {
       todoList,
       listContent,
-      editedContent
+      editedContent,
+      leftItems
     } = this.state;
 
     return (
@@ -147,6 +138,10 @@ class App extends Component {
                       removeItem={this.removeItem}/>
                   )}
                 </List>
+
+                <footer>
+                  {leftItems} items left
+                </footer>
               </Paper>
             </Col>
           </Row>

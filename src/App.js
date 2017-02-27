@@ -20,7 +20,8 @@ class App extends Component {
       todoList: [],
       listContent: '',
       editedContent: '',
-      leftItems: 0
+      leftItems: 0,
+      category: 'All'
     }
 
     this.removeItem = this.removeItem.bind(this);
@@ -32,16 +33,21 @@ class App extends Component {
     this.toggleEditView = this.toggleEditView.bind(this);
     this.updateItem = this.updateItem.bind(this);
     this.categoryList = this.categoryList.bind(this);
+    this.updateCategoryfilter = this.updateCategoryfilter.bind(this);
   }
 
   categoryList(list, filterVal){
       if(filterVal === 'Completed') {
         return list.filter((todo) => todo.completed === true);
-      } else if (filterVal === 'Incompleted') {
+      } else if (filterVal === 'Active') {
         return list.filter((todo) => todo.completed === false);
       } else {
         return list;
       }
+  }
+
+  updateCategoryfilter(filterVal){
+    this.setState({category: filterVal});
   }
 
   removeItem(id){
@@ -125,10 +131,11 @@ class App extends Component {
       todoList,
       listContent,
       editedContent,
-      leftItems
+      leftItems,
+      category
     } = this.state;
 
-    const filteredList = this.categoryList(todoList, 'Incompleted') || [];
+    const filteredList = this.categoryList(todoList, category) || [];
 
     return (
       <MuiThemeProvider>
@@ -140,7 +147,6 @@ class App extends Component {
                 <TodoInput addItem={this.addItem} listContent={listContent}   onSearchChange={this.onSearchChange} />
 
                 <List>
-                  {console.log(filteredList)}
                   {filteredList.map((item,i) =>
                     <TodoItem
                       item={item}
@@ -155,6 +161,11 @@ class App extends Component {
 
                 <footer>
                   {leftItems} items left
+                  <FlatButton label="All" onClick={() => this.updateCategoryfilter("All")}/>
+
+                  <FlatButton label="Active" onClick={() => this.updateCategoryfilter("Active")}/>
+
+                  <FlatButton label="Completed" onClick={() => this.updateCategoryfilter("Completed")}/>
                 </footer>
               </Paper>
             </Col>
@@ -205,7 +216,7 @@ const TodoItem = ({ item,
                     children={<IconDelete color={red500} hoverColor={red800} />}
                     onClick={ () => removeItem(item.id)} />}
         >
-          <Checkbox style={{width:"10%"}} onClick={() => toggleCompletion(item, index)} />
+          <Checkbox style={{width:"10%"}} checked={item.completed} onClick={() => toggleCompletion(item, index)} />
           <div onDoubleClick={() =>toggleEditView(item, index)} className={item.completed ? 'completedTodo' : ''}>
             {item.content}
           </div>

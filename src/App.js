@@ -31,6 +31,17 @@ class App extends Component {
     this.toggleCompletion = this.toggleCompletion.bind(this);
     this.toggleEditView = this.toggleEditView.bind(this);
     this.updateItem = this.updateItem.bind(this);
+    this.categoryList = this.categoryList.bind(this);
+  }
+
+  categoryList(list, filterVal){
+      if(filterVal === 'Completed') {
+        return list.filter((todo) => todo.completed === true);
+      } else if (filterVal === 'Incompleted') {
+        return list.filter((todo) => todo.completed === false);
+      } else {
+        return list;
+      }
   }
 
   removeItem(id){
@@ -117,6 +128,8 @@ class App extends Component {
       leftItems
     } = this.state;
 
+    const filteredList = this.categoryList(todoList, 'Incompleted') || [];
+
     return (
       <MuiThemeProvider>
         <Grid className="App">
@@ -127,7 +140,8 @@ class App extends Component {
                 <TodoInput addItem={this.addItem} listContent={listContent}   onSearchChange={this.onSearchChange} />
 
                 <List>
-                  {todoList.map((item,i) =>
+                  {console.log(filteredList)}
+                  {filteredList.map((item,i) =>
                     <TodoItem
                       item={item}
                       index={i}

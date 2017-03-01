@@ -32,6 +32,7 @@ class App extends Component {
     this.toggleEditView = this.toggleEditView.bind(this);
     this.updateItem = this.updateItem.bind(this);
     this.categoryList = this.categoryList.bind(this);
+    this.clearCompleted = this.clearCompleted.bind(this);
   }
 
   categoryList(list, filterVal){
@@ -42,6 +43,16 @@ class App extends Component {
       } else {
         return list;
       }
+  }
+
+  clearCompleted(){
+    let { todoList } = this.state;
+
+    todoList = todoList.filter((todo) => todo.completed === false);
+
+    this.setState({
+      todoList: todoList
+    });
   }
 
   removeItem(id){
@@ -87,14 +98,14 @@ class App extends Component {
   }
 
   toggleCompletion(item) {
-    const {todoList, leftItems} = this.state;
+    const { leftItems } = this.state;
+
     item.completed = !item.completed;
+
     let completed = item.completed ? leftItems - 1 : leftItems + 1;
 
     this.setState({
-      todoList: todoList,
-      editedContent: item.content,
-      leftItems: completed
+      leftItems: completed,
     });
   }
 
@@ -161,6 +172,8 @@ class App extends Component {
                   <FlatButton label="Active" href="#/active" />
 
                   <FlatButton label="Completed" href="#/completed" />
+
+                  <FlatButton label="Clear Completed" onClick={this.clearCompleted} />
                 </footer>
               </Paper>
             </Col>

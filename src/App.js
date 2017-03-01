@@ -9,6 +9,7 @@ import Divider from 'material-ui/Divider';
 import Checkbox from 'material-ui/Checkbox';
 import IconButton from 'material-ui/IconButton';
 import IconDelete from 'material-ui/svg-icons/action/delete';
+import Toggle from 'material-ui/Toggle';
 import {red800, red500} from 'material-ui/styles/colors';
 import { Grid, Col, Row } from 'react-bootstrap';
 
@@ -20,7 +21,8 @@ class App extends Component {
       todoList: [],
       listContent: '',
       editedContent: '',
-      leftItems: 0
+      leftItems: 0,
+      isAllCompleted: false
     }
 
     this.removeItem = this.removeItem.bind(this);
@@ -33,6 +35,25 @@ class App extends Component {
     this.updateItem = this.updateItem.bind(this);
     this.categoryList = this.categoryList.bind(this);
     this.clearCompleted = this.clearCompleted.bind(this);
+    this.toggleAll = this.toggleAll.bind(this);
+  }
+
+  toggleAll(){
+    let { todoList, isAllCompleted } = this.state;
+
+    if(isAllCompleted){
+      todoList = todoList.map((todo) => {todo.completed = false; return todo;});
+    } else {
+      todoList = todoList.map((todo) => {todo.completed = true; return todo;});
+    }
+    
+    console.log(todoList);
+    isAllCompleted = !isAllCompleted;
+
+    this.setState({
+      todoList: todoList,
+      isAllCompleted: isAllCompleted
+    })
   }
 
   categoryList(list, filterVal){
@@ -73,6 +94,9 @@ class App extends Component {
     event.preventDefault();
     const { listContent, leftItems } = this.state;
 
+    if(listContent === '') {
+      return 1;
+    }
 
     let item = {
       'id': this.setPreviousId() || 1,
@@ -123,6 +147,12 @@ class App extends Component {
     event.preventDefault();
 
     let todoList = this.state.todoList;
+
+    if(this.state.editedContent === ''){
+      todoList[i].beingEdited = false;
+      return 1;
+    }
+
     todoList[i].content = this.state.editedContent;
     todoList[i].beingEdited = false;
 
@@ -150,6 +180,7 @@ class App extends Component {
           <Row className="show-grid">
             <Col xs={12} md={6} mdOffset={3}>
               <Paper zDepth={1}>
+                <Toggle disabled={ leftItems ? false : true } onToggle={this.toggleAll}/>
                 <TodoInput addItem={this.addItem} listContent={listContent}   onSearchChange={this.onSearchChange} />
 
                 <List>
@@ -238,17 +269,17 @@ const TodoItem = ({ item,
 const TodoInput = ({addItem,
                     listContent,
                     onSearchChange}) =>
-  <form onSubmit={addItem}>
-    <TextField
-      id="text-field-controlled"
-      type="text"
-      value={listContent}
-      onChange={onSearchChange}
-      multiLine={true}
-      rows={1}
-      rowsMax={4}
-    />
-    <FlatButton type="submit" label="SUBMIT" primary={true}/>
-  </form>
+    <form onSubmit={addItem}>
+      <TextField
+        id="text-field-controlled"
+        type="text"
+        value={listContent}
+        onChange={onSearchChange}
+        multiLine={true}
+        rows={1}
+        rowsMax={4}
+      />
+      <FlatButton type="submit" label="SUBMIT" primary={true}/>
+    </form>
 
 export default App;

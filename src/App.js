@@ -66,13 +66,14 @@ class App extends Component {
   }
 
   clearCompleted(){
-    let { todoList, leftItems } = this.state;
+    let { todoList } = this.state;
 
     todoList = todoList.filter((todo) => todo.completed === false);
 
     this.setState({
       todoList: todoList,
-      leftItems: leftItems - 1
+      leftItems: 0,
+      isAllCompleted: false
     });
   }
 
@@ -183,7 +184,7 @@ class App extends Component {
           <Row className="show-grid">
             <Col xs={12} md={6} mdOffset={3}>
               <Paper zDepth={1}>
-                <Toggle disabled={ leftItems ? false : true } onToggle={this.toggleAll}/>
+                <Toggle disabled={ leftItems ? false : true } onToggle={this.toggleAll} toggled={this.state.isAllCompleted}/>
                 <TodoInput addItem={this.addItem} listContent={listContent}   onSearchChange={this.onSearchChange} />
 
                 <List>

@@ -66,13 +66,13 @@ class App extends Component {
   }
 
   clearCompleted(){
-    let { todoList } = this.state;
+    let { todoList, isAllCompleted, leftItems } = this.state;
 
     todoList = todoList.filter((todo) => todo.completed === false);
 
     this.setState({
       todoList: todoList,
-      leftItems: 0,
+      leftItems: isAllCompleted ? 0 : leftItems, 
       isAllCompleted: false
     });
   }

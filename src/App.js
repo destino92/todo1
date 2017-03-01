@@ -20,8 +20,7 @@ class App extends Component {
       todoList: [],
       listContent: '',
       editedContent: '',
-      leftItems: 0,
-      category: 'All'
+      leftItems: 0
     }
 
     this.removeItem = this.removeItem.bind(this);
@@ -33,21 +32,16 @@ class App extends Component {
     this.toggleEditView = this.toggleEditView.bind(this);
     this.updateItem = this.updateItem.bind(this);
     this.categoryList = this.categoryList.bind(this);
-    this.updateCategoryfilter = this.updateCategoryfilter.bind(this);
   }
 
   categoryList(list, filterVal){
-      if(filterVal === 'Completed') {
+      if(filterVal === '#/completed') {
         return list.filter((todo) => todo.completed === true);
-      } else if (filterVal === 'Active') {
+      } else if (filterVal === '#/active') {
         return list.filter((todo) => todo.completed === false);
       } else {
         return list;
       }
-  }
-
-  updateCategoryfilter(filterVal){
-    this.setState({category: filterVal});
   }
 
   removeItem(id){
@@ -131,11 +125,12 @@ class App extends Component {
       todoList,
       listContent,
       editedContent,
-      leftItems,
-      category
+      leftItems
     } = this.state;
 
-    const filteredList = this.categoryList(todoList, category) || [];
+    const {hash} = this.props.location;
+
+    const filteredList = this.categoryList(todoList, hash) || [];
 
     return (
       <MuiThemeProvider>
@@ -161,11 +156,11 @@ class App extends Component {
 
                 <footer>
                   {leftItems} items left
-                  <FlatButton label="All" onClick={() => this.updateCategoryfilter("All")}/>
+                  <FlatButton label="All" href="#/" />
 
-                  <FlatButton label="Active" onClick={() => this.updateCategoryfilter("Active")}/>
+                  <FlatButton label="Active" href="#/active" />
 
-                  <FlatButton label="Completed" onClick={() => this.updateCategoryfilter("Completed")}/>
+                  <FlatButton label="Completed" href="#/completed" />
                 </footer>
               </Paper>
             </Col>

@@ -46,8 +46,7 @@ class App extends Component {
     } else {
       todoList = todoList.map((todo) => {todo.completed = true; return todo;});
     }
-    
-    console.log(todoList);
+
     isAllCompleted = !isAllCompleted;
 
     this.setState({
@@ -67,20 +66,24 @@ class App extends Component {
   }
 
   clearCompleted(){
-    let { todoList } = this.state;
+    let { todoList, leftItems } = this.state;
 
     todoList = todoList.filter((todo) => todo.completed === false);
 
     this.setState({
-      todoList: todoList
+      todoList: todoList,
+      leftItems: leftItems - 1
     });
   }
 
   removeItem(id){
+    let {leftItems} = this.state;
+
     var todoList = this.state.todoList.filter(item => item.id !== id);
 
     this.setState({
-      todoList: todoList
+      todoList: todoList,
+      leftItems: leftItems - 1
     });
   }
 

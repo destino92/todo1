@@ -86,10 +86,10 @@ class App extends Component {
     this.setState({ editedContent: event.target.value });
   }
 
-  toggleCompletion(item, i) {
+  toggleCompletion(item) {
     const {todoList, leftItems} = this.state;
-    todoList[i].completed = !todoList[i].completed;
-    let completed = todoList[i].completed ? leftItems - 1 : leftItems + 1;
+    item.completed = !item.completed;
+    let completed = item.completed ? leftItems - 1 : leftItems + 1;
 
     this.setState({
       todoList: todoList,

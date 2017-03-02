@@ -128,13 +128,19 @@ class App extends Component {
 
   toggleCompletion(item) {
     const { leftItems } = this.state;
+    let completionTruth;
 
     item.completed = !item.completed;
 
     let completed = item.completed ? leftItems - 1 : leftItems + 1;
 
+    if(item.completed === false) {
+      completionTruth = false;
+    }
+
     this.setState({
       leftItems: completed,
+      isAllCompleted: completionTruth
     });
   }
 
@@ -171,6 +177,7 @@ class App extends Component {
       todoList,
       listContent,
       editedContent,
+      isAllCompleted,
       leftItems
     } = this.state;
 
@@ -184,7 +191,7 @@ class App extends Component {
           <Row className="show-grid">
             <Col xs={12} md={6} mdOffset={3}>
               <Paper zDepth={1}>
-                <Toggle disabled={ (leftItems === 0 && todoList.length === 0) ? true : false } onToggle={this.toggleAll} toggled={this.state.isAllCompleted}/>
+                <Toggle disabled={ (leftItems === 0 && todoList.length === 0) ? true : false } onToggle={this.toggleAll} toggled={isAllCompleted}/>
                 <TodoInput addItem={this.addItem} listContent={listContent}   onSearchChange={this.onSearchChange} />
 
                 <List>

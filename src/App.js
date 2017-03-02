@@ -39,7 +39,7 @@ class App extends Component {
   }
 
   toggleAll(){
-    let { todoList, isAllCompleted } = this.state;
+    let { todoList, isAllCompleted, leftItems } = this.state;
 
     if(isAllCompleted){
       todoList = todoList.map((todo) => {todo.completed = false; return todo;});
@@ -51,7 +51,8 @@ class App extends Component {
 
     this.setState({
       todoList: todoList,
-      isAllCompleted: isAllCompleted
+      isAllCompleted: isAllCompleted,
+      leftItems: isAllCompleted ? 0 : todoList.items.length
     })
   }
 
@@ -72,7 +73,7 @@ class App extends Component {
 
     this.setState({
       todoList: todoList,
-      leftItems: isAllCompleted ? 0 : leftItems, 
+      leftItems: isAllCompleted ? 0 : leftItems,
       isAllCompleted: false
     });
   }
@@ -184,7 +185,7 @@ class App extends Component {
           <Row className="show-grid">
             <Col xs={12} md={6} mdOffset={3}>
               <Paper zDepth={1}>
-                <Toggle disabled={ leftItems ? false : true } onToggle={this.toggleAll} toggled={this.state.isAllCompleted}/>
+                <Toggle disabled={ (leftItems && todoList != []) ? false : true } onToggle={this.toggleAll} toggled={this.state.isAllCompleted}/>
                 <TodoInput addItem={this.addItem} listContent={listContent}   onSearchChange={this.onSearchChange} />
 
                 <List>

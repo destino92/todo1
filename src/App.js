@@ -39,7 +39,7 @@ class App extends Component {
   }
 
   toggleAll(){
-    let { todoList, isAllCompleted, leftItems } = this.state;
+    let { todoList, isAllCompleted } = this.state;
 
     if(isAllCompleted){
       todoList = todoList.map((todo) => {todo.completed = false; return todo;});
@@ -52,7 +52,7 @@ class App extends Component {
     this.setState({
       todoList: todoList,
       isAllCompleted: isAllCompleted,
-      leftItems: isAllCompleted ? 0 : todoList.items.length
+      leftItems: isAllCompleted ? 0 : todoList.length
     })
   }
 
@@ -85,7 +85,7 @@ class App extends Component {
 
     this.setState({
       todoList: todoList,
-      leftItems: leftItems - 1
+      leftItems: leftItems === 0 ? 0 : leftItems - 1
     });
   }
 
@@ -181,11 +181,10 @@ class App extends Component {
     return (
       <MuiThemeProvider>
         <Grid className="App">
-
           <Row className="show-grid">
             <Col xs={12} md={6} mdOffset={3}>
               <Paper zDepth={1}>
-                <Toggle disabled={ (leftItems && todoList != []) ? false : true } onToggle={this.toggleAll} toggled={this.state.isAllCompleted}/>
+                <Toggle disabled={ (leftItems === 0 && todoList.length === 0) ? true : false } onToggle={this.toggleAll} toggled={this.state.isAllCompleted}/>
                 <TodoInput addItem={this.addItem} listContent={listContent}   onSearchChange={this.onSearchChange} />
 
                 <List>

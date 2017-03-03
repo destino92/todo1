@@ -12,7 +12,7 @@ import IconDelete from 'material-ui/svg-icons/action/delete';
 import Toggle from 'material-ui/Toggle';
 import {red800, red500} from 'material-ui/styles/colors';
 import { Grid, Col, Row } from 'react-bootstrap';
-import TodoItem from 'components/TodoItem';
+import TodoItem from './components/TodoItem';
 
 class App extends Component {
   constructor(props) {

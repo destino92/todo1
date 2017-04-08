@@ -20,7 +20,7 @@ class App extends Component {
     // App state
     this.state = {
       todoList: [],
-      listContent: '',
+      todoContent: '',
       editedContent: '',
       leftItems: 0,
       isAllCompleted: false
@@ -48,22 +48,22 @@ class App extends Component {
   // add a todo to todoList
   addItem(event){
     event.preventDefault();
-    const { listContent, leftItems } = this.state;
+    const { todoContent, leftItems } = this.state;
 
-    if(listContent === '') {
+    if(todoContent.trim() === '') {
       return 1;
     }
 
     let item = {
       'id': this.setPreviousId() || 1,
-      'content': listContent,
+      'content': todoContent,
       completed: false,
       beingEdited: false
     }
 
     this.setState(previousState => ({
         todoList: [...previousState.todoList, item],
-        listContent: '',
+        todoContent: '',
         leftItems: leftItems + 1
       })
     );
@@ -176,7 +176,7 @@ class App extends Component {
 
   // controlled input method
   onTextChange(event) {
-    this.setState({ listContent: event.target.value });
+    this.setState({ todoContent: event.target.value });
   }
 
   // controlled input method
@@ -188,7 +188,7 @@ class App extends Component {
     // use destructuring to declare state properties as variables
     const {
       todoList,
-      listContent,
+      todoContent,
       editedContent,
       isAllCompleted,
       leftItems
@@ -205,7 +205,7 @@ class App extends Component {
             <Col xs={12} md={6} mdOffset={3}>
               <Paper zDepth={1}>
                 <Toggle disabled={ (leftItems === 0 && todoList.length === 0) ? true : false } onToggle={this.toggleAll} toggled={isAllCompleted}/>
-                <TodoInput addItem={this.addItem} listContent={listContent}   onTextChange={this.onTextChange} />
+                <TodoInput addItem={this.addItem} todoContent={todoContent}   onTextChange={this.onTextChange} />
 
                 <List>
                   {filteredList.map((item,i) =>
@@ -241,13 +241,13 @@ class App extends Component {
 
 // input component
 const TodoInput = ({addItem,
-                    listContent,
+                    todoContent,
                     onTextChange}) =>
     <form onSubmit={addItem}>
       <TextField
         id="text-field-controlled"
         type="text"
-        value={listContent}
+        value={todoContent}
         onChange={onTextChange}
         multiLine={true}
         rows={1}

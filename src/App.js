@@ -194,9 +194,9 @@ class App extends Component {
       leftItems
     } = this.state;
 
-    const {routeParamater} = this.props.location;
+    const {hash} = this.props.location;
 
-    const filteredList = this.categorisedList(todoList, routeParamater) || [];
+    const filteredList = this.categorisedList(todoList, hash) || [];
 
     return (
       <MuiThemeProvider>
